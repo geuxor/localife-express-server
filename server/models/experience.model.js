@@ -1,7 +1,6 @@
-console.log('model:                       🙋‍♂️ entering experience.model');
+console.log('model:                        🍭 entering experience.model');
 
-function ExperienceModel(seq, types) {
-
+function ExperienceModel(seq, types) { 
   const Experience = seq.define('Experience', {
     title: {
       type: types.STRING,

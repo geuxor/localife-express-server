@@ -5,6 +5,7 @@ const router = require('./routers')
 const cors = require('cors');
 const SERVER_PORT = process.env.SERVER_PORT || 4001;
 const { sequelize } = require('./models/index')
+const faker = require('faker');
 
 require('dotenv').config()
 
@@ -30,12 +31,38 @@ app.use(
       secure: false,
     },
   })
-);
+  );  
+  
+  app.use(router);
 
-app.use(router);
+  app.get("/xps", (req, res) => {
+    res.json(getXps());
+  });
+  
+  function getXps() {
+    let experiences = [];
+
+    for (let i = 0; i < 12; i++) {
+      const randomTitle = faker.commerce.productAdjective()
+      const randomWords = faker.lorem.words()
+      var randomCity = faker.address.cityName();
+      var randomImage = faker.image.imageUrl();
+      const randomDescription = faker.commerce.productDescription()
+      const randomPrice = faker.commerce.price()
+      experiences.push({
+        title: randomTitle + ' ' + randomWords,
+        description: randomDescription,
+        location: randomCity,
+        price: randomPrice,
+        image: randomImage
+      })
+    }
+    return experiences;
+  }
+
 app.get('*', (req, res) => {
   res.status(404).send('server ERR:                   🌵 No Route found');
-});
+});  
 
 (async () => {
   try {
@@ -46,9 +73,11 @@ app.get('*', (req, res) => {
         console.log(`server ERR:          👽 Bad errors occuring! ${err}`); // eslint-disable-line no-console
       } else {
         console.log(`===========================   🛰️ Server listening on port ${process.env.SERVER_PORT}! =======================>>`); // eslint-disable-line no-console
-      }
-    })
+      }  
+    })  
   } catch (err) {
     console.log(err)
-  }
-})();
+  }  
+})();  
+
+
